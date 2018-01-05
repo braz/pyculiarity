@@ -139,7 +139,9 @@ def detect_ts(df, max_anoms=0.10, direction='pos',
     else:
         title = title + " : "
 
-    gran = get_gran(df)
+    #gran = get_gran(df)
+    # only checking at this granularity
+    gran="min"
 
     if gran == "day":
         num_days_per_line = 7
