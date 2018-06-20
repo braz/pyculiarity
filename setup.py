@@ -16,7 +16,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyculiarity',
-    version='0.0.2',
+    version='0.0.6',
     description='A Python port of Twitter\'s AnomalyDetection R Package.',
     long_description=__doc__,
     url='https://github.com/nicolasmiller/pyculiarity',
@@ -34,7 +34,7 @@ setup(
     keywords='data anomaly detection pandas timeseries',
     packages=['pyculiarity'],
     install_requires=['numpy', 'scipy', 'pandas', 'pytz',
-                      'statsmodels', 'rpy2'],
+                      'statsmodels', 'rpy2==2.8.6'],
     extras_require={
         'test': ['nose', 'mock']
     }

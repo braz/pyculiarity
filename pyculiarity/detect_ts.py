@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from collections import namedtuple
-from date_utils import format_timestamp, get_gran, date_format, datetimes_from_ts
-from detect_anoms import detect_anoms
+from pyculiarity.date_utils import format_timestamp, get_gran, date_format, datetimes_from_ts
+from pyculiarity.detect_anoms import detect_anoms
 from math import ceil
 from pandas import DataFrame
-from pandas.lib import Timestamp
+from pandas._libs.lib import Timestamp
 import datetime
 import numpy as np
+from six import string_types
 
 Direction = namedtuple('Direction', ['one_tail', 'upper_tail'])
 
@@ -125,13 +126,13 @@ def detect_ts(df, max_anoms=0.10, direction='pos',
     if not isinstance(y_log, bool):
         raise ValueError("y_log must be a boolean")
 
-    if not isinstance(xlabel, basestring):
+    if not isinstance(xlabel, string_types):
         raise ValueError("xlabel must be a string")
 
-    if not isinstance(ylabel, basestring):
+    if not isinstance(ylabel, string_types):
         raise ValueError("ylabel must be a string")
 
-    if title and not isinstance(title, basestring):
+    if title and not isinstance(title, string_types):
         raise ValueError("title must be a string")
 
     if not title:
@@ -145,7 +146,7 @@ def detect_ts(df, max_anoms=0.10, direction='pos',
 
     if gran == "day":
         num_days_per_line = 7
-        if isinstance(only_last, basestring) and only_last == 'hr':
+        if isinstance(only_last, string_types) and only_last == 'hr':
             only_last = 'day'
     else:
         num_days_per_line = 1
@@ -185,7 +186,7 @@ def detect_ts(df, max_anoms=0.10, direction='pos',
         for j in range(0, len(df.timestamp), num_obs_in_period):
             start_date = df.timestamp.iloc[j]
             end_date = min(start_date
-                           + datetime.timedelta(days=num_obs_in_period),
+                           + datetime.timedelta(days=num_days_in_period),
                            df.timestamp.iloc[-1])
 
             # if there is at least 14 days left, subset it,
@@ -260,11 +261,11 @@ def detect_ts(df, max_anoms=0.10, direction='pos',
 
     # Cleanup potential duplicates
     try:
-        all_anoms.drop_duplicates(subset=['timestamp'])
-        seasonal_plus_trend.drop_duplicates(subset=['timestamp'])
+        all_anoms.drop_duplicates(subset=['timestamp'], inplace=True)
+        seasonal_plus_trend.drop_duplicates(subset=['timestamp'], inplace=True)
     except TypeError:
-        all_anoms.drop_duplicates(cols=['timestamp'])
-        seasonal_plus_trend.drop_duplicates(cols=['timestamp'])
+        all_anoms.drop_duplicates(cols=['timestamp'], inplace=True)
+        seasonal_plus_trend.drop_duplicates(cols=['timestamp'], inplace=True)
 
     # -- If only_last was set by the user,
     # create subset of the data that represent the most recent day
