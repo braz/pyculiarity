@@ -158,7 +158,7 @@ def detect_ts(df, max_anoms=0.10, direction='pos',
     # if the data is daily, then we need to bump
     # the period to weekly to get multiple examples
     gran_period = {
-        'min': 1440,
+        'min': 720,
         'hr': 24,
         'day': 7
     }
