@@ -57,7 +57,7 @@ def detect_anoms(data, k=0.49, alpha=0.05, num_obs_per_period=None,
 
     if not isinstance(data.index, ps.Int64Index):
         resample_period = {
-            1440: 'T',
+            720: 'T',
             24: 'H',
             7: 'D'
         }
